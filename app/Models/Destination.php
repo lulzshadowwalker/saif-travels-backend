@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Destination extends Model implements HasTranslations
+class Destination extends Model implements HasTranslations, HasMedia
 {
     /** @use HasFactory<\Database\Factories\DestinationFactory> */
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     public $translatable = ["name"];
 
@@ -25,5 +27,12 @@ class Destination extends Model implements HasTranslations
     public function packages()
     {
         return $this->belongsToMany(Package::class, "destination_package");
+    }
+
+    const MEDIA_COLLECTION_IMAGES = "destination-images";
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::MEDIA_COLLECTION_IMAGES);
     }
 }
