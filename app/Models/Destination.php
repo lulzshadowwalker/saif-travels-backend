@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Observers\DestinationObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(DestinationObserver::class)]
 class Destination extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\DestinationFactory> */
