@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
-class Destination extends Model
+class Destination extends Model implements HasTranslations
 {
     /** @use HasFactory<\Database\Factories\DestinationFactory> */
     use HasFactory;
