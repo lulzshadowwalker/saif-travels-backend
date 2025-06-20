@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Package;
 use App\Models\Destination;
+use App\Models\Support;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -38,5 +39,7 @@ class DatabaseSeeder extends Seeder
                             ->toArray()
                     );
             });
+
+        Support::factory()->count(5)->create();
     }
 }
