@@ -18,7 +18,7 @@ class Destination extends Model implements HasMedia
 
     public $translatable = ["name"];
 
-    protected $fillable = ["name"];
+    protected $fillable = ["name", "slug"];
 
     protected function casts(): array
     {

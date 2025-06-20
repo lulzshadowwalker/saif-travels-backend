@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\PackageChip;
+
 class PackageFactory extends BaseFactory
 {
     /**
@@ -20,7 +22,7 @@ class PackageFactory extends BaseFactory
                 fn(): string => $this->faker->paragraph
             ),
             "tags" => implode(",", $this->faker->words(3)),
-            "chips" => $this->localized(fn(): array => $this->faker->words(2)),
+            "chips" => [PackageChip::yoga, PackageChip::yoga],
             "goal" => $this->localized(fn(): array => [$this->faker->sentence]),
             "durations" => $this->faker->numberBetween(1, 14),
             "program" => $this->localized(
