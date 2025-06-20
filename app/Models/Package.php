@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\PackageChip;
+use App\Enums\PackageStatus;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Observers\PackageObserver;
+use App\Services\TagParser;
 
 #[ObservedBy(PackageObserver::class)]
 class Package extends Model implements HasMedia
@@ -24,7 +28,6 @@ class Package extends Model implements HasMedia
     public $translatable = [
         "name",
         "description",
-        "chips",
         "goal",
         "program",
         "activities",
@@ -53,14 +56,14 @@ class Package extends Model implements HasMedia
             "name" => "array",
             "description" => "array",
             "tags" => "string",
-            "chips" => "array",
+            "chips" => "json",
             "goal" => "array",
             "durations" => "integer",
             "program" => "array",
             "activities" => "array",
             "stay" => "array",
             "iv_drips" => "array",
-            "status" => \App\Enums\PackageStatus::class,
+            "status" => PackageStatus::class,
         ];
     }
 
@@ -74,5 +77,16 @@ class Package extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::MEDIA_COLLECTION_IMAGES);
+    }
+
+    /**
+     * Get the tags as an array using TagParser.
+     */
+    protected function tagsArray(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            $parser = new TagParser();
+            return $parser->parseSimple($attributes["tags"] ?? "");
+        });
     }
 }

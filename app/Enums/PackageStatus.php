@@ -3,9 +3,10 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum PackageStatus: string implements HasLabel, HasColor
+enum PackageStatus: string implements HasLabel, HasColor, HasIcon
 {
     case active = "active";
     case inactive = "inactive";
@@ -23,6 +24,14 @@ enum PackageStatus: string implements HasLabel, HasColor
         return match ($this) {
             self::active => "success",
             self::inactive => "danger",
+        };
+    }
+
+    public function getIcon(): string
+    {
+        return match ($this) {
+            self::active => "heroicon-o-check-circle",
+            self::inactive => "heroicon-o-x-circle",
         };
     }
 

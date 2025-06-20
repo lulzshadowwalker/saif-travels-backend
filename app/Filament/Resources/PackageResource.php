@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PackageChip;
 use App\Enums\PackageStatus;
 use App\Filament\Resources\PackageResource\Pages;
 use App\Filament\Resources\PackageResource\RelationManagers;
@@ -35,20 +36,7 @@ class PackageResource extends Resource
                         ->helperText("This field supports multiple languages.")
                         ->required()
                         ->maxLength(255)
-                        ->translatable()
-                        ->live(onBlur: true)
-                        ->afterStateUpdated(function (
-                            string $operation,
-                            $state,
-                            Forms\Set $set
-                        ) {
-                            if ($operation === "create" && $state) {
-                                $set(
-                                    "slug",
-                                    \Illuminate\Support\Str::slug($state)
-                                );
-                            }
-                        }),
+                        ->translatable(),
 
                     Forms\Components\Select::make("status")
                         ->label("Status")
@@ -95,14 +83,16 @@ class PackageResource extends Resource
                         ->translatable()
                         ->columnSpanFull(),
 
-                    Forms\Components\Textarea::make("chips")
+                    Forms\Components\Select::make("chips")
                         ->label("Key Features (Chips)")
-                        ->placeholder("Enter key features/highlights")
+                        ->placeholder("Select key features/highlights")
                         ->helperText(
-                            "Brief highlights or features. This field supports multiple languages."
+                            "Select one or more features for this package"
                         )
+                        ->options(PackageChip::class)
+                        ->multiple()
+                        ->searchable()
                         ->required()
-                        ->translatable()
                         ->columnSpanFull(),
 
                     Forms\Components\Textarea::make("goal")
