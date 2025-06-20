@@ -2,12 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Enums\SupportStatus;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Support>
- */
-class SupportFactory extends Factory
+class SupportFactory extends BaseFactory
 {
     /**
      * Define the model's default state.
@@ -20,6 +17,7 @@ class SupportFactory extends Factory
             "name" => $this->faker->name(),
             "email" => $this->faker->email(),
             "phone" => $this->faker->phoneNumber(),
+            "status" => $this->faker->randomElement(SupportStatus::values()),
         ];
     }
 }

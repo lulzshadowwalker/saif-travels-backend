@@ -61,7 +61,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([Authenticate::class])
             ->plugins([
-                FilamentTranslatableFieldsPlugin::make([
+                FilamentTranslatableFieldsPlugin::make()->supportedLocales([
                     "en" => "English",
                     "ar" => "Arabic",
                 ]),
