@@ -8,10 +8,10 @@ use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Destination extends Model implements HasTranslations, HasMedia
+class Destination extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\DestinationFactory> */
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, HasTranslations, InteractsWithMedia;
 
     public $translatable = ["name"];
 

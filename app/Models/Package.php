@@ -8,10 +8,10 @@ use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Package extends Model implements HasTranslations, HasMedia
+class Package extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\PackageFactory> */
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, HasTranslations, InteractsWithMedia;
 
     /**
      * The attributes that are translatable using Spatie Translatable.
