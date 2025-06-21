@@ -22,26 +22,7 @@ class PackageResource extends JsonResource
                 "slug" => $this->slug,
                 "description" => $this->description,
                 "tags" => $this->tagsArray,
-                "chips" => $this->chips
-                    ? array_map(
-                        fn($chip) => [
-                            "value" => $chip,
-                            "label" =>
-                                \App\Enums\PackageChip::tryFrom(
-                                    $chip
-                                )?->getLabel() ?? $chip,
-                            "color" =>
-                                \App\Enums\PackageChip::tryFrom(
-                                    $chip
-                                )?->getColor() ?? "primary",
-                            "icon" =>
-                                \App\Enums\PackageChip::tryFrom(
-                                    $chip
-                                )?->getIcon() ?? null,
-                        ],
-                        $this->chips
-                    )
-                    : [],
+                "chips" => $this->chips ?? [],
                 "goal" => $this->goal,
                 "durations" => $this->durations,
                 "durationsDays" =>
@@ -52,12 +33,7 @@ class PackageResource extends JsonResource
                 "activities" => $this->activities,
                 "stay" => $this->stay,
                 "ivDrips" => $this->iv_drips,
-                "status" => [
-                    "value" => $this->status->value,
-                    "label" => $this->status->getLabel(),
-                    "color" => $this->status->getColor(),
-                    "icon" => $this->status->getIcon(),
-                ],
+                "status" => $this->status,
                 "isActive" =>
                     $this->status === \App\Enums\PackageStatus::active,
                 "createdAt" => $this->created_at->toIso8601String(),

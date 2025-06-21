@@ -23,17 +23,20 @@ class PackageFactory extends BaseFactory
             ),
             "tags" => implode(",", $this->faker->words(3)),
             "chips" => [PackageChip::yoga, PackageChip::yoga],
-            "goal" => $this->localized(fn(): array => [$this->faker->sentence]),
+            "goal" => $this->localized(fn() => $this->faker->sentence),
             "durations" => $this->faker->numberBetween(1, 14),
             "program" => $this->localized(
-                fn(): array => [$this->faker->sentence, $this->faker->sentence]
+                fn() => $this->faker->sentence,
+                $this->faker->sentence
             ),
             "activities" => $this->localized(
-                fn(): array => [$this->faker->word, $this->faker->word]
+                fn() => $this->faker->word,
+                $this->faker->word
             ),
-            "stay" => $this->localized(fn(): array => [$this->faker->company]),
+            "stay" => $this->localized(fn() => $this->faker->company),
             "iv_drips" => $this->localized(
-                fn(): array => [$this->faker->word, $this->faker->word]
+                fn() => $this->faker->word,
+                $this->faker->word
             ),
             "status" => $this->faker->randomElement(
                 \App\Enums\PackageStatus::cases()
