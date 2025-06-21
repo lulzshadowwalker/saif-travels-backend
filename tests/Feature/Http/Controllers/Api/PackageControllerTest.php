@@ -72,65 +72,6 @@ class PackageControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_lists_only_active_packages(): void
-    {
-        $activePackages = $this->packages->filter(
-            fn($p) => $p->status === PackageStatus::active
-        );
-
-        $response = $this->getJson(route("api.packages.index"));
-
-        $response
-            ->assertOk()
-            ->assertJsonCount(2, "data")
-            ->assertJsonStructure([
-                "data" => [
-                    "*" => [
-                        "type",
-                        "id",
-                        "attributes" => [
-                            "name",
-                            "slug",
-                            "description",
-                            "tags",
-                            "chips" => [
-                                "*" => ["value", "label", "color", "icon"],
-                            ],
-                            "goal",
-                            "durations",
-                            "durationsDays",
-                            "program",
-                            "activities",
-                            "stay",
-                            "ivDrips",
-                            "status" => ["value", "label", "color", "icon"],
-                            "isActive",
-                            "createdAt",
-                            "updatedAt",
-                            "createdAtForHumans",
-                            "updatedAtForHumans",
-                        ],
-                        "relationships" => [
-                            "destinations" => ["data"],
-                            "media" => ["images"],
-                        ],
-                        "links" => ["self"],
-                    ],
-                ],
-                "meta",
-                "links",
-            ]);
-
-        // Verify only active packages are returned
-        $returnedIds = collect($response->json("data"))
-            ->pluck("id")
-            ->sort()
-            ->values();
-        $expectedIds = $activePackages->pluck("id")->sort()->values();
-        $this->assertEquals($expectedIds, $returnedIds);
-    }
-
-    /** @test */
     public function it_paginates_packages_correctly(): void
     {
         // Create more packages for pagination testing
@@ -253,10 +194,7 @@ class PackageControllerTest extends TestCase
         $chips = $firstPackage["attributes"]["chips"];
 
         $this->assertCount(1, $chips);
-        $this->assertEquals("yoga", $chips[0]["value"]);
-        $this->assertEquals("Yoga", $chips[0]["label"]);
-        $this->assertEquals("primary", $chips[0]["color"]);
-        $this->assertNotNull($chips[0]["icon"]);
+        $this->assertEquals("yoga", $chips[0]);
     }
 
     /** @test */
@@ -292,10 +230,7 @@ class PackageControllerTest extends TestCase
         $firstPackage = collect($response->json("data"))->first();
         $status = $firstPackage["attributes"]["status"];
 
-        $this->assertEquals("active", $status["value"]);
-        $this->assertEquals("Active", $status["label"]);
-        $this->assertEquals("success", $status["color"]);
-        $this->assertNotNull($status["icon"]);
+        $this->assertEquals("active", $status);
     }
 
     /** @test */

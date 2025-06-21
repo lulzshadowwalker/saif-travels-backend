@@ -56,3 +56,17 @@ Route::prefix("support")
     ->group(function () {
         Route::post("/", [SupportController::class, "store"])->name("store");
     });
+
+// Retreat routes
+Route::prefix("retreats")
+    ->name("api.retreats.")
+    ->group(function () {
+        Route::get("/", [
+            \App\Http\Controllers\Api\RetreatController::class,
+            "index",
+        ])->name("index");
+        Route::get("/{retreat}", [
+            \App\Http\Controllers\Api\RetreatController::class,
+            "show",
+        ])->name("show");
+    });
