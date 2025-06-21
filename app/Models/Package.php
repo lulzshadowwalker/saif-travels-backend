@@ -83,11 +83,43 @@ class Package extends Model implements HasMedia
     /**
      * Get the tags as an array using TagParser.
      */
-    protected function tagsArray(): Attribute
+    public function tagsArray(): Attribute
     {
         return Attribute::get(function ($value, $attributes) {
             $parser = new TagParser();
             return $parser->parseSimple($attributes["tags"] ?? "");
+        });
+    }
+
+    public function stayArray(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            $parser = new TagParser();
+            return $parser->parseSimple($attributes["stay"] ?? "");
+        });
+    }
+
+    public function ivDripsArray(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            $parser = new TagParser();
+            return $parser->parseSimple($attributes["iv_drips"] ?? "");
+        });
+    }
+
+    public function programArray(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            $parser = new TagParser();
+            return $parser->parseSimple($attributes["program"] ?? "");
+        });
+    }
+
+    public function activitiesArray(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            $parser = new TagParser();
+            return $parser->parseSimple($attributes["activities"] ?? "");
         });
     }
 

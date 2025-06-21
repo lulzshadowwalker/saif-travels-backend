@@ -32,10 +32,10 @@ class PackageResource extends JsonResource
                     $this->durations .
                     " " .
                     str("day")->plural($this->durations),
-                "program" => $this->program,
-                "activities" => $this->activities,
-                "stay" => $this->stay,
-                "ivDrips" => $this->iv_drips,
+                "program" => $this->programArray,
+                "activities" => $this->activitiesArray,
+                "stay" => $this->stayArray,
+                "ivDrips" => $this->ivDripsArray,
                 "status" => $this->formatStatus(),
                 "isActive" =>
                     $this->status === \App\Enums\PackageStatus::active,
@@ -43,7 +43,7 @@ class PackageResource extends JsonResource
             ],
             "relationships" => [
                 "destinations" => DestinationResource::collection(
-                    $this->whenLoaded("destinations")
+                    $this->destinations
                 ),
                 "media" => [
                     "images" => $this->whenLoaded("media", function () {

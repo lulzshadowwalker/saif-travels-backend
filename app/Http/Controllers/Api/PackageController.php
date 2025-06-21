@@ -22,8 +22,7 @@ class PackageController extends Controller
             ->with(["destinations", "media"])
             ->withCount("destinations")
             ->orderBy("created_at", "desc")
-            // ->where("status", PackageStatus::active->value)
-            ->paginate($request->input("per_page", 15));
+            ->paginate();
 
         return PackageResource::collection($packages);
     }
@@ -35,7 +34,7 @@ class PackageController extends Controller
     {
         // Only show active packages
         if ($package->status !== \App\Enums\PackageStatus::active) {
-            abort(404);
+            // abort(404);
         }
 
         $package
