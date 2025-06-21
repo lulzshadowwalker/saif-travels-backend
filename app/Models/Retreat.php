@@ -29,6 +29,6 @@ class Retreat extends Model
 
     public function packages(): BelongsToMany
     {
-        return $this->belongsToMany(Package::class);
+        return $this->belongsToMany(Package::class, "package_retreat");
     }
 }

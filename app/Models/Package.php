@@ -93,6 +93,6 @@ class Package extends Model implements HasMedia
 
     public function retreats(): BelongsToMany
     {
-        return $this->belongsToMany(Retreat::class, "retreat_package");
+        return $this->belongsToMany(Retreat::class, "package_retreat");
     }
 }
