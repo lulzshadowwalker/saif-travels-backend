@@ -8,6 +8,7 @@ use App\Models\Package;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Enums\PackageStatus;
 
 class PackageController extends Controller
 {
@@ -21,6 +22,7 @@ class PackageController extends Controller
             ->with(["destinations", "media"])
             ->withCount("destinations")
             ->orderBy("created_at", "desc")
+            // ->where("status", PackageStatus::active->value)
             ->paginate($request->input("per_page", 15));
 
         return PackageResource::collection($packages);

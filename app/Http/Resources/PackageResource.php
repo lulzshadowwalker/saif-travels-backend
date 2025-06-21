@@ -25,9 +25,7 @@ class PackageResource extends JsonResource
                 "slug" => $this->slug,
                 "description" => $this->description,
                 "tags" => $this->tagsArray,
-                "chips" => $this->chips
-                    ? ChipResource::collection(collect($this->chips))
-                    : [],
+                "chips" => $this->chips,
                 "goal" => $this->goal,
                 "durations" => $this->durations,
                 "durationsDays" =>
