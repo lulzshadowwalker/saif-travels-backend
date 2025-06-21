@@ -39,8 +39,8 @@ class PackageFactory extends BaseFactory
                 $this->faker->word
             ),
             "status" => $this->faker->randomElement(
-                \App\Enums\PackageStatus::cases()
-            )->value,
+                \App\Enums\PackageStatus::values()
+            ),
         ];
     }
 }

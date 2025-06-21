@@ -13,6 +13,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Observers\PackageObserver;
 use App\Services\TagParser;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[ObservedBy(PackageObserver::class)]
 class Package extends Model implements HasMedia
@@ -88,5 +89,10 @@ class Package extends Model implements HasMedia
             $parser = new TagParser();
             return $parser->parseSimple($attributes["tags"] ?? "");
         });
+    }
+
+    public function retreats(): BelongsToMany
+    {
+        return $this->belongsToMany(Retreat::class, "retreat_package");
     }
 }
