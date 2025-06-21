@@ -59,3 +59,26 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## API Internationalization (i18n)
+
+The SAIF Backend API supports internationalization through the `Accept-Language` HTTP header with support for:
+- **English** (`en`) - Default language
+- **Arabic** (`ar`)
+
+### Usage
+
+```bash
+# Request content in English
+curl -H "Accept-Language: en" http://localhost:8000/api/packages
+
+# Request content in Arabic
+curl -H "Accept-Language: ar" http://localhost:8000/api/packages
+
+# Complex Accept-Language headers with preferences
+curl -H "Accept-Language: ar;q=0.9,en;q=0.8" http://localhost:8000/api/packages
+```
+
+The API automatically returns content in the requested language if available, falling back to English as the default. All translatable content (packages, retreats, destinations, FAQs) respects the Accept-Language header.
+
+For detailed documentation, see [docs/api-i18n.md](docs/api-i18n.md).

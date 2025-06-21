@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $destinations = Destination::factory(5)->create();
 
         // Create 10 packages and attach random destinations to each
-        $packages = Package::factory(10)
+        $packages = Package::factory(5)
             ->create()
             ->each(function ($package) use ($destinations) {
                 $package
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         Support::factory()->count(5)->create();
 
         // Create 3 retreats and attach random packages to each
-        Retreat::factory(3)
+        Retreat::factory(1)
             ->create()
             ->each(function ($retreat) use ($packages) {
                 $retreat
