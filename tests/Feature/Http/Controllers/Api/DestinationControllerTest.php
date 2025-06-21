@@ -116,7 +116,7 @@ class DestinationControllerTest extends TestCase
         $response->assertOk();
 
         $names = collect($response->json("data"))
-            ->pluck("attributes.name.en")
+            ->pluck("attributes.name")
             ->toArray();
 
         $this->assertEquals(["Abu Dhabi", "Dubai", "Sharjah"], $names);

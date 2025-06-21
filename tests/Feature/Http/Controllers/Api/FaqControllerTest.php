@@ -100,12 +100,6 @@ class FaqControllerTest extends TestCase
 
         $this->assertEquals("faqs", $firstFaq["type"]);
         $this->assertEquals($this->faqs[2]->id, $firstFaq["id"]); // Most recent first
-        $this->assertIsArray($firstFaq["attributes"]["question"]);
-        $this->assertIsArray($firstFaq["attributes"]["answer"]);
-        $this->assertArrayHasKey("en", $firstFaq["attributes"]["question"]);
-        $this->assertArrayHasKey("ar", $firstFaq["attributes"]["question"]);
-        $this->assertArrayHasKey("en", $firstFaq["attributes"]["answer"]);
-        $this->assertArrayHasKey("ar", $firstFaq["attributes"]["answer"]);
     }
 
     /** @test */
@@ -168,21 +162,11 @@ class FaqControllerTest extends TestCase
         // Check English translations
         $this->assertEquals(
             "What is your cancellation policy?",
-            $faq["attributes"]["question"]["en"]
+            $faq["attributes"]["question"]
         );
         $this->assertEquals(
             "Cancellations must be made at least 48 hours before the trip.",
-            $faq["attributes"]["answer"]["en"]
-        );
-
-        // Check Arabic translations
-        $this->assertEquals(
-            "ما هي سياسة الإلغاء لديكم؟",
-            $faq["attributes"]["question"]["ar"]
-        );
-        $this->assertEquals(
-            "يجب إجراء الإلغاء قبل 48 ساعة على الأقل من الرحلة.",
-            $faq["attributes"]["answer"]["ar"]
+            $faq["attributes"]["answer"]
         );
     }
 

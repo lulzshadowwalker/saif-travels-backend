@@ -18,7 +18,7 @@ class DestinationResource extends JsonResource
             "type" => "destinations",
             "id" => $this->id,
             "attributes" => [
-                "name" => $this->getTranslations("name"),
+                "name" => $this->name,
                 "slug" => $this->slug,
                 "createdAt" => $this->created_at->toIso8601String(),
                 "updatedAt" => $this->updated_at->toIso8601String(),
@@ -34,7 +34,7 @@ class DestinationResource extends JsonResource
                                 "type" => "packages",
                                 "id" => $package->id,
                                 "attributes" => [
-                                    "name" => $package->getTranslations("name"),
+                                    "name" => $package->name,
                                     "slug" => $package->slug,
                                     "durations" => $package->durations,
                                     "durationsDays" =>
@@ -69,7 +69,7 @@ class DestinationResource extends JsonResource
                             fn($media) => [
                                 "id" => $media->id,
                                 "url" => $media->getUrl(),
-                                "thumbnailUrl" => $media->getUrl("thumb"),
+                                // "thumbnailUrl" => $media->getUrl("thumb"),
                                 "name" => $media->name,
                                 "fileName" => $media->file_name,
                                 "mimeType" => $media->mime_type,
