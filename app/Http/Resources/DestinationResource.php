@@ -2,11 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DestinationResource extends JsonResource
 {
+    use HasTimestamps;
     /**
      * Transform the resource into an array.
      *
@@ -20,66 +22,20 @@ class DestinationResource extends JsonResource
             "attributes" => [
                 "name" => $this->name,
                 "slug" => $this->slug,
-                "createdAt" => $this->created_at->toIso8601String(),
-                "updatedAt" => $this->updated_at->toIso8601String(),
-                "createdAtForHumans" => $this->created_at->diffForHumans(),
-                "updatedAtForHumans" => $this->updated_at->diffForHumans(),
+                ...$this->timestamps(),
             ],
             "relationships" => [
-                "packages" => $this->when(
-                    $this->relationLoaded("packages"),
-                    function () {
-                        return $this->packages->map(function ($package) {
-                            return [
-                                "type" => "packages",
-                                "id" => $package->id,
-                                "attributes" => [
-                                    "name" => $package->name,
-                                    "slug" => $package->slug,
-                                    "durations" => $package->durations,
-                                    "durationsDays" =>
-                                        $package->durations .
-                                        " " .
-                                        str("day")->plural($package->durations),
-                                    "tags" => $package->tagsArray,
-                                    "status" => [
-                                        "value" => $package->status->value,
-                                        "label" => $package->status->getLabel(),
-                                        "color" => $package->status->getColor(),
-                                    ],
-                                    "isActive" =>
-                                        $package->status ===
-                                        \App\Enums\PackageStatus::active,
-                                ],
-                                "links" => [
-                                    "self" => route("api.packages.show", [
-                                        "package" => $package->slug,
-                                    ]),
-                                ],
-                            ];
-                        });
-                    }
+                "packages" => PackageResource::collection(
+                    $this->whenLoaded("packages")
                 ),
                 "media" => [
-                    "images" => $this->when(
-                        $this->relationLoaded("media"),
-                        fn() => $this->getMedia(
-                            \App\Models\Destination::MEDIA_COLLECTION_IMAGES
-                        )->map(
-                            fn($media) => [
-                                "id" => $media->id,
-                                "url" => $media->getUrl(),
-                                // "thumbnailUrl" => $media->getUrl("thumb"),
-                                "name" => $media->name,
-                                "fileName" => $media->file_name,
-                                "mimeType" => $media->mime_type,
-                                "size" => $media->size,
-                                "humanReadableSize" =>
-                                    $media->human_readable_size,
-                                "order" => $media->order_column,
-                            ]
-                        )
-                    ),
+                    "images" => $this->whenLoaded("media", function () {
+                        return MediaResource::collection(
+                            $this->resource->getMedia(
+                                \App\Models\Destination::MEDIA_COLLECTION_IMAGES
+                            )
+                        );
+                    }),
                 ],
             ],
             "meta" => [

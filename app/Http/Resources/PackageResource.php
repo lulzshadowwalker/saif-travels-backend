@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Concerns\HasTimestamps;
+use App\Http\Resources\Concerns\HasStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PackageResource extends JsonResource
 {
+    use HasTimestamps, HasStatus;
     /**
      * Transform the resource into an array.
      *
@@ -22,7 +25,9 @@ class PackageResource extends JsonResource
                 "slug" => $this->slug,
                 "description" => $this->description,
                 "tags" => $this->tagsArray,
-                "chips" => $this->chips ?? [],
+                "chips" => $this->chips
+                    ? ChipResource::collection(collect($this->chips))
+                    : [],
                 "goal" => $this->goal,
                 "durations" => $this->durations,
                 "durationsDays" =>
@@ -33,55 +38,23 @@ class PackageResource extends JsonResource
                 "activities" => $this->activities,
                 "stay" => $this->stay,
                 "ivDrips" => $this->iv_drips,
-                "status" => $this->status,
+                "status" => $this->formatStatus(),
                 "isActive" =>
                     $this->status === \App\Enums\PackageStatus::active,
-                "createdAt" => $this->created_at->toIso8601String(),
-                "updatedAt" => $this->updated_at->toIso8601String(),
-                "createdAtForHumans" => $this->created_at->diffForHumans(),
-                "updatedAtForHumans" => $this->updated_at->diffForHumans(),
+                ...$this->timestamps(),
             ],
             "relationships" => [
-                "destinations" => [
-                    "data" => $this->whenLoaded(
-                        "destinations",
-                        function () {
-                            return $this->destinations->map(function (
-                                $destination
-                            ) {
-                                return [
-                                    "type" => "destinations",
-                                    "id" => $destination->id,
-                                    "attributes" => [
-                                        "name" => $destination->name,
-                                        "slug" => $destination->slug,
-                                    ],
-                                ];
-                            });
-                        },
-                        []
-                    ),
-                ],
+                "destinations" => DestinationResource::collection(
+                    $this->whenLoaded("destinations")
+                ),
                 "media" => [
-                    "images" => $this->when(
-                        $this->relationLoaded("media"),
-                        fn() => $this->getMedia(
-                            \App\Models\Package::MEDIA_COLLECTION_IMAGES
-                        )->map(
-                            fn($media) => [
-                                "id" => $media->id,
-                                "url" => $media->getUrl(),
-                                // "thumbnailUrl" => $media->getUrl("thumb"),
-                                "name" => $media->name,
-                                "fileName" => $media->file_name,
-                                "mimeType" => $media->mime_type,
-                                "size" => $media->size,
-                                "humanReadableSize" =>
-                                    $media->human_readable_size,
-                                "order" => $media->order_column,
-                            ]
-                        )
-                    ),
+                    "images" => $this->whenLoaded("media", function () {
+                        return MediaResource::collection(
+                            $this->resource->getMedia(
+                                \App\Models\Package::MEDIA_COLLECTION_IMAGES
+                            )
+                        );
+                    }),
                 ],
             ],
             "links" => [

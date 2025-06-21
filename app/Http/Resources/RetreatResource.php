@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Concerns\HasTimestamps;
+use App\Http\Resources\Concerns\HasStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RetreatResource extends JsonResource
 {
+    use HasTimestamps, HasStatus;
     /**
      * Transform the resource into an array.
      *
@@ -19,42 +22,12 @@ class RetreatResource extends JsonResource
             "id" => $this->id,
             "attributes" => [
                 "name" => $this->name,
-                "status" => $this->status,
-                "createdAt" => $this->created_at->toIso8601String(),
-                "updatedAt" => $this->updated_at->toIso8601String(),
-                "createdAtForHumans" => $this->created_at->diffForHumans(),
-                "updatedAtForHumans" => $this->updated_at->diffForHumans(),
+                "status" => $this->formatStatus(),
+                ...$this->timestamps(),
             ],
             "relationships" => [
-                "packages" => $this->when(
-                    $this->relationLoaded("packages"),
-                    function () {
-                        return $this->packages->map(function ($package) {
-                            return [
-                                "type" => "packages",
-                                "id" => $package->id,
-                                "attributes" => [
-                                    "name" => $package->name,
-                                    "slug" => $package->slug,
-                                    "durations" => $package->durations,
-                                    "durationsDays" =>
-                                        $package->durations .
-                                        " " .
-                                        str("day")->plural($package->durations),
-                                    "tags" => $package->tagsArray,
-                                    "status" => $package->status,
-                                    "isActive" =>
-                                        $package->status ===
-                                        \App\Enums\PackageStatus::active,
-                                ],
-                                "links" => [
-                                    "self" => route("api.packages.show", [
-                                        "package" => $package->slug,
-                                    ]),
-                                ],
-                            ];
-                        });
-                    }
+                "packages" => PackageResource::collection(
+                    $this->whenLoaded("packages")
                 ),
             ],
             "meta" => [

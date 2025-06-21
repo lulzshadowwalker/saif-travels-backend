@@ -2,11 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FaqResource extends JsonResource
 {
+    use HasTimestamps;
     /**
      * Transform the resource into an array.
      *
@@ -20,10 +22,7 @@ class FaqResource extends JsonResource
             "attributes" => [
                 "question" => $this->question,
                 "answer" => $this->answer,
-                "createdAt" => $this->created_at->toIso8601String(),
-                "updatedAt" => $this->updated_at->toIso8601String(),
-                "createdAtForHumans" => $this->created_at->diffForHumans(),
-                "updatedAtForHumans" => $this->updated_at->diffForHumans(),
+                ...$this->timestamps(),
             ],
         ];
     }
