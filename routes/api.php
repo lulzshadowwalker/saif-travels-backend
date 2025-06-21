@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\DestinationController;
+use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\PackageController;
+use App\Http\Controllers\Api\SupportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +41,18 @@ Route::prefix("destinations")
             DestinationController::class,
             "show",
         ])->name("show");
+    });
+
+// FAQ routes
+Route::prefix("faqs")
+    ->name("api.faqs.")
+    ->group(function () {
+        Route::get("/", [FaqController::class, "index"])->name("index");
+    });
+
+// Support routes
+Route::prefix("support")
+    ->name("api.support.")
+    ->group(function () {
+        Route::post("/", [SupportController::class, "store"])->name("store");
     });

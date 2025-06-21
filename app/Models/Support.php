@@ -14,7 +14,7 @@ class Support extends Model
     /** @use HasFactory<\Database\Factories\SupportFactory> */
     use HasFactory;
 
-    protected $fillable = ["name", "email", "phone", "status"];
+    protected $fillable = ["name", "email", "phone", "message", "status"];
 
     protected function casts(): array
     {

@@ -17,6 +17,7 @@ class SupportFactory extends BaseFactory
             "name" => $this->faker->name(),
             "email" => $this->faker->email(),
             "phone" => $this->faker->phoneNumber(),
+            "message" => $this->faker->paragraph(3),
             "status" => $this->faker->randomElement(SupportStatus::values()),
         ];
     }
