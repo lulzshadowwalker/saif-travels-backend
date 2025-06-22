@@ -22,7 +22,10 @@ class PackageFactory extends BaseFactory
                 fn(): string => $this->faker->paragraph
             ),
             "tags" => implode(",", $this->faker->words(3)),
-            "chips" => [PackageChip::yoga, PackageChip::yoga],
+            "chips" => $this->faker->randomElements(
+                PackageChip::cases(),
+                rand(1, min(count(PackageChip::cases()), 3))
+            ),
             "goal" => $this->localized(fn() => $this->faker->sentence),
             "durations" => $this->faker->numberBetween(1, 14),
             "program" => $this->localized(
