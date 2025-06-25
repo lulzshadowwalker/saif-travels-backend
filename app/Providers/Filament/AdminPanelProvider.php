@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentTranslatableFields\Filament\Plugins\FilamentTranslatableFieldsPlugin;
+use Filament\Enums\ThemeMode;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -25,6 +26,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->defaultThemeMode(ThemeMode::Light)
             ->id("admin")
             ->path("admin")
             ->login()
