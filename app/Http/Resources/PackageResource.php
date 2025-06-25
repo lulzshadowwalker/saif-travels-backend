@@ -29,7 +29,7 @@ class PackageResource extends JsonResource
                 "goal" => $this->goal,
                 "durations" => $this->durations,
                 "durationsDays" =>
-                    $this->durations .
+                $this->durations .
                     " " .
                     str("day")->plural($this->durations),
                 "program" => $this->programArray,
@@ -38,7 +38,7 @@ class PackageResource extends JsonResource
                 "ivDrips" => $this->ivDripsArray,
                 "status" => $this->formatStatus(),
                 "isActive" =>
-                    $this->status === \App\Enums\PackageStatus::active,
+                $this->status === \App\Enums\PackageStatus::active,
                 ...$this->timestamps(),
             ],
             "relationships" => [
@@ -46,13 +46,12 @@ class PackageResource extends JsonResource
                     $this->destinations
                 ),
                 "media" => [
-                    "images" => $this->whenLoaded("media", function () {
-                        return MediaResource::collection(
-                            $this->resource->getMedia(
-                                \App\Models\Package::MEDIA_COLLECTION_IMAGES
-                            )
-                        );
-                    }),
+                    "images" =>
+                    MediaResource::collection(
+                        $this->resource->getMedia(
+                            \App\Models\Package::MEDIA_COLLECTION_IMAGES
+                        )
+                    )
                 ],
             ],
             "links" => [

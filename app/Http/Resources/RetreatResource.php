@@ -26,9 +26,7 @@ class RetreatResource extends JsonResource
                 ...$this->timestamps(),
             ],
             "relationships" => [
-                "packages" => PackageResource::collection(
-                    $this->whenLoaded("packages")
-                ),
+                "packages" => PackageResource::collection($this->packages),
             ],
             "meta" => [
                 "packagesCount" => $this->whenCounted("packages"),
